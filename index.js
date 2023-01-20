@@ -1,12 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
     const grid = document.querySelector('.grid')
     const doodler = document.createElement('div')
+    let isGameOver = false
+    let speed = 3
+    let platformCount = 5
+    let platforms = []
+    let score = 0
     let doodlerLeftSpace = 50
     let startPoint = 150
     let doodlerBottomSpace = startPoint
-    let isGameOver = false
-    let platformCount = 5
-    let platforms = []
+    const gravity = 0.9
     let upTimerId
     let downTimerId
     let isJumping = true
@@ -14,7 +17,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let isGoingRight = false
     let leftTimerId
     let rightTimerId
-    let score = 0
     
     function createDoodler (){
         grid.appendChild(doodler)
@@ -104,13 +106,13 @@ document.addEventListener('DOMContentLoaded', () => {
             doodler.style.bottom = doodlerBottomSpace + 'px'
             console.log('2',doodlerBottomSpace)
             console.log('s',startPoint)
-            if (doodlerBottomSpace > startPoint + 200) {
+            if (doodlerBottomSpace > (startPoint + 200)) {
                 fall()
                 isJumping = false
             }
         },30)
     }
-    
+
     function moveLeft() {
         if (isGoingRight) {
             clearInterval(rightTimerId)
@@ -119,40 +121,43 @@ document.addEventListener('DOMContentLoaded', () => {
         isGoingLeft = true
         leftTimerId = setInterval(function () {
             if (doodlerLeftSpace >= 0) {
-                doodlerLeftSpace -=5 
-                doodler.style.left = doodlerLeftSpace + 'px'
+              console.log('going left')
+              doodlerLeftSpace -=5
+               doodler.style.left = doodlerLeftSpace + 'px'
             } else moveRight()
         },20)
-    }
-
-    function moveRight() {
+      }
+    
+      function moveRight() {
         if (isGoingLeft) {
             clearInterval(leftTimerId)
             isGoingLeft = false
         }
         isGoingRight = true
         rightTimerId = setInterval(function () {
-            if (doodlerLeftSpace <= 313) {
-                doodlerLeftSpace += 5
-                doodler.style.left = doodlerLeftSpace + 'px'
-            } else moveLeft()
+          //changed to 313 to fit doodle image
+          if (doodlerLeftSpace <= 313) {
+            console.log('going right')
+            doodlerLeftSpace +=5
+            doodler.style.left = doodlerLeftSpace + 'px'
+          } else moveLeft()
         },20)
-    }
-
-    function moveStraight() {
+      }
+      
+      function moveStraight() {
         isGoingLeft = false
         isGoingRight = false
-        clearInterval(rightTimerId)
         clearInterval(leftTimerId)
-    }
+        clearInterval(rightTimerId)
+      }
  
     function control(e) {
         doodler.style.bottom = doodlerBottomSpace + 'px'
-        if (e.key === "ArrowLeft") {
+        if (e.key === 'ArrowLeft') {
             moveLeft()
-        } else if (e.ky === "ArrowRight") {
+        } else if (e.ky === 'ArrowRight') {
             moveRight()
-        } else if (e.key === "ArrowUp") {
+        } else if (e.key === 'ArrowUp') {
             moveStraight()
         }
     }
