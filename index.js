@@ -129,6 +129,10 @@ function fall() {
           doodlerLeftSpace -=5
            doodler.style.left = doodlerLeftSpace + 'px'
         } else moveRight()
+      
+      if (isGoingLeft) {
+        return
+      }
     },20)
   }
 
@@ -145,6 +149,10 @@ function fall() {
         doodlerLeftSpace +=5
         doodler.style.left = doodlerLeftSpace + 'px'
       } else moveLeft()
+      
+      if (isGoingRight) {
+        return
+      }
     },20)
   }
   
